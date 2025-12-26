@@ -56,7 +56,7 @@ model Video {
 
 model Job {
   id          String    @id @default(uuid())
-  type        String    // SCRIPT, VOICE, VIDEO, PUBLISH
+  type        String
   status      JobStatus @default(PENDING)
   payload     Json
   result      Json?
