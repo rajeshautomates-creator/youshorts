@@ -1,0 +1,38 @@
+services:
+  app-db:
+    image: postgres:15-alpine
+    container_name: shorts-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shortsyoutube
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    container_name: shorts-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@app-db:5432/shortsyoutube?schema=public
+      - JWT_SECRET=supersecretkey
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+    depends_on:
+      - app-db
+
+  frontend:
+    build: ./frontend
+    container_name: shorts-frontend
+    ports:
+      - "4040:4040"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
