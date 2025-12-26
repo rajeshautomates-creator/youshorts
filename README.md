@@ -37,19 +37,21 @@ Production-ready full-stack YouTube Shorts automation app with Admin Panel.
    - Note the connection string.
 4. **Backend Service:**
    - Connect your GitHub repo.
-   - Set the root directory to `backend`.
+   - **Important:** In Dokploy Settings, set:
+     - **Docker Path**: `backend/Dockerfile`
+     - **Build Context**: `.` (The root of the repo)
    - Add environment variables:
      - `DATABASE_URL`: Your Dokploy Postgres URL.
      - `JWT_SECRET`: Random string.
      - `OPENAI_API_KEY`: your-key.
      - `ELEVENLABS_API_KEY`: your-key.
-   - Dokploy will automatically use the `Dockerfile` in the `backend` folder.
 5. **Frontend Service:**
    - Connect the same repo.
-   - Set the root directory to `frontend`.
+   - **Important:** In Dokploy Settings, set:
+     - **Docker Path**: `frontend/Dockerfile`
+     - **Build Context**: `.` (The root of the repo)
    - Add environment variables:
      - `NEXT_PUBLIC_API_URL`: Your backend domain (e.g., `https://api.yourdomain.com`).
-   - Dokploy will use the `Dockerfile` in the `frontend` folder.
    - Set the domain for the frontend.
 
 ## Features
