@@ -1,21 +1,23 @@
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN DATABASE_URL="postgresql://postgres:postgres@localhost:5432/db" npx prisma generate
+# Use a valid schema URL for build-time generation
+ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/db"
+RUN npx prisma generate
 RUN npm run build
 
-FROM node:20-alpine
+FROM node:20-slim
 WORKDIR /app
-RUN apk add --no-cache ffmpeg
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y ffmpeg openssl && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-# Provide .env if it exists, but don't fail if it doesn't. 
-# Best practice for Dokploy is to use their Env Vars UI.
-COPY --from=builder /app/.env* ./ 
 
 EXPOSE 5000
 CMD ["npm", "start"]
