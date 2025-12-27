@@ -2,7 +2,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copy package files
+# Check for package-lock.json and copy it
 COPY frontend/package*.json ./
 RUN npm install
 
@@ -11,18 +11,17 @@ COPY frontend/ .
 RUN npm run build
 
 # ---------- Runtime ----------
-FROM node:20-alpine
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOSTNAME="0.0.0.0"
 ENV PORT=4040
 
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
+# Standalone build creates a 'standalone' folder which is what we need
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./
 
 EXPOSE 4040
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
