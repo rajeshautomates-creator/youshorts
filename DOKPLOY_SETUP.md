@@ -9,9 +9,7 @@ In the Dokploy UI, go to your **Backend Service** -> **Deployment Tab** -> **Gen
 
 - **Root Directory**: `backend`
 - **Docker Path**: `Dockerfile`
-- **Build Context**: `.` 
-
-*Note: If you leave Root Directory as `/`, then set Docker Path to `backend/Dockerfile`.*
+- **Build Context**: `backend` 
 
 ---
 
@@ -20,9 +18,7 @@ In the Dokploy UI, go to your **Frontend Service** -> **Deployment Tab** -> **Ge
 
 - **Root Directory**: `frontend`
 - **Docker Path**: `Dockerfile`
-- **Build Context**: `.`
-
-*Note: If you leave Root Directory as `/`, then set Docker Path to `frontend/Dockerfile`.*
+- **Build Context**: `frontend`
 
 ---
 
@@ -33,6 +29,8 @@ In the Dokploy UI, go to your **Frontend Service** -> **Deployment Tab** -> **Ge
 - `OPENAI_API_KEY`: ...
 - `ELEVENLABS_API_KEY`: ...
 - `JWT_SECRET`: ...
+- `PORT`: 5000
 
 ### Frontend (.env)
 - `NEXT_PUBLIC_API_URL`: https://your-backend-api.com
+- `PORT`: 4040

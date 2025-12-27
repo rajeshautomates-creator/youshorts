@@ -2,6 +2,10 @@ import axios from 'axios';
 import { env } from '../config/env';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const generateVoice = async (text: string, voiceId: string = '21m00Tcm4TlvDq8ikWAM') => {
     const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
@@ -26,11 +30,12 @@ export const generateVoice = async (text: string, voiceId: string = '21m00Tcm4Tl
     });
 
     const fileName = `voice_${Date.now()}.mp3`;
-    const filePath = path.join(__dirname, '../../uploads/audio', fileName);
+    const uploadsDir = path.join(process.cwd(), 'uploads/audio');
+    const filePath = path.join(uploadsDir, fileName);
 
     // Ensure directory exists
-    if (!fs.existsSync(path.dirname(filePath))) {
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
     fs.writeFileSync(filePath, Buffer.from(response.data));
