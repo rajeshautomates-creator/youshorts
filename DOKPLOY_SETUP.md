@@ -1,19 +1,25 @@
-# Dokploy Deployment Guide (REVISED)
+## 🛑 FIXING THE "502 BAD GATEWAY" ERROR
 
-Follow these steps to deploy correctly. I have restored the root Dockerfiles to make this easier.
+If your frontend shows a 502 error, follow these 3 steps exactly:
 
----
+### Step 1: Fix the Service Port (CRITICAL)
+Dokploy defaults to port 3000, but our app uses **4040**.
+1. In Dokploy, go to your **Frontend Service**.
+2. Click on the **Domains** or **Network** tab.
+3. Find the **Service Port** setting and change it to `4040`.
+4. Click **Save**.
 
-## 1. Backend Service
-In the Dokploy UI:
+### Step 2: Fix Environment Variable Formatting
+Your current settings have spaces that will break the app.
+1. Go to the **Environment** tab.
+2. Change: `PORT =4040` ❌ 
+3. To: `PORT=4040` ✅ (NO SPACES around the `=`)
 
-- **Root Directory**: `/` (Leave as default or set to `/`)
-- **Docker Path**: `Dockerfile`
-- **Build Context**: `.` 
-
-### Environment Variables
-- `PORT`: 5000
-- `DATABASE_URL`, `JWT_SECRET`, `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`
+### Step 3: Fix the API URL
+Next.js needs the FULL URL of your backend to communicate from the browser.
+1. Go to the **Environment** tab.
+2. Change: `NEXT_PUBLIC_API_URL=/api` ❌
+3. To: `NEXT_PUBLIC_API_URL=https://api.shorts.rajeshautomates.in` ✅ (Use the full domain including https)
 
 ---
 
