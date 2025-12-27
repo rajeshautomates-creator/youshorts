@@ -1,9 +1,9 @@
 import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth.middleware';
-import * as aiService from '../services/ai.service';
-import * as voiceService from '../services/voice.service';
-import * as videoService from '../services/video.service';
-import prisma from '../utils/prisma';
+import { AuthRequest } from '../middleware/auth.middleware.js';
+import * as aiService from '../services/ai.service.js';
+import * as voiceService from '../services/voice.service.js';
+import * as videoService from '../services/video.service.js';
+import prisma from '../utils/prisma.js';
 
 export const generateScriptHandler = async (req: AuthRequest, res: Response) => {
     try {

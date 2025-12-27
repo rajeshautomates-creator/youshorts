@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as videoController from '../controllers/video.controller';
-import { authenticate } from '../middleware/auth.middleware';
+import * as videoController from '../controllers/video.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
