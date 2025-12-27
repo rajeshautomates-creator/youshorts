@@ -1,39 +1,36 @@
-# Dokploy Deployment Guide (CRITICAL)
+# Dokploy Deployment Guide (REVISED)
 
-To deploy this monorepo in Dokploy, you MUST follow these settings exactly. Failure to set the **Root Directory** correctly will cause build errors.
+Follow these steps to deploy correctly. I have restored the root Dockerfiles to make this easier.
 
 ---
 
 ## 1. Backend Service
-In the Dokploy UI, create a **Nixpacks** or **Docker** service:
+In the Dokploy UI:
 
-- **Root Directory**: `backend`  <-- (CRITICAL: Set this to "backend")
-- **Docker Path**: `Dockerfile`  <-- (This is the file inside /backend)
-- **Build Context**: `backend`   <-- (CRITICAL: Context must match Root Dir)
+- **Root Directory**: `/` (Leave as default or set to `/`)
+- **Docker Path**: `Dockerfile`
+- **Build Context**: `.` 
 
 ### Environment Variables
-- `DATABASE_URL`: Your Postgres connection string.
-- `JWT_SECRET`: Random complex string.
-- `OPENAI_API_KEY`: Your API key.
-- `ELEVENLABS_API_KEY`: Your API key.
 - `PORT`: 5000
+- `DATABASE_URL`, `JWT_SECRET`, `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`
 
 ---
 
 ## 2. Frontend Service
 In the Dokploy UI:
 
-- **Root Directory**: `frontend` <-- (CRITICAL: Set this to "frontend")
-- **Docker Path**: `Dockerfile`  <-- (This is the file inside /frontend)
-- **Build Context**: `frontend`  <-- (CRITICAL: Context must match Root Dir)
+- **Root Directory**: `/` (Leave as default or set to `/`)
+- **Docker Path**: `frontend.Dockerfile`  <-- (Note the name change)
+- **Build Context**: `.`
 
 ### Environment Variables
-- `NEXT_PUBLIC_API_URL`: Your backend URL (e.g. `https://api.myapp.com`)
 - `PORT`: 4040
+- `NEXT_PUBLIC_API_URL`: Your backend URL
 
 ---
 
-## Why did my build fail?
-If you see an error like `COPY backend/prisma not found`, it means Dokploy is trying to use the **root** of the repository as the build context. 
+## Troubleshooting
+If you kept **Root Directory** = `backend` in your previous attempt, the build will fail because the `Dockerfile` inside `backend/` is different from the one in the root.
 
-**Solution:** Ensure both **Root Directory** and **Build Context** are set to the specific folder (`backend` or `frontend`). I have deleted the root Dockerfiles to prevent this confusion.
+**RECOMMENDED:** Set **Root Directory** to `/` and use the settings above. It is the most reliable way for monorepos in Dokploy.
