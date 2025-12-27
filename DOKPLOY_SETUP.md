@@ -45,5 +45,13 @@ In the Dokploy environment tab, ensure there is **NO SPACE** around the equals s
 - **Correct:** `PORT=4040`
 - **Incorrect:** `PORT = 4040`
 
-## Troubleshooting "Invalid environment variables"
-If the backend logs show "Invalid environment variables", it means one of the required keys above is missing or undefined in the Dokploy dashboard. **Dokploy does not automatically read your local .env file**; you must copy-paste each variable into the Dokploy UI.
+## 🆘 Still getting 502 Bad Gateway? (Last Resort)
+
+If you've updated the code and settings but still see 502:
+
+1. **Check Dokploy Logs:** Look at the "Logs" tab for the Frontend.
+   - If you see `✓ Ready on 0.0.0.0:4040`, the app is PERFECT. The issue is definitely the **Service Port** in Dokploy Domains tab.
+2. **Re-Add Environment Variables:** Delete the `PORT` and `NEXT_PUBLIC_API_URL` variables and re-add them one by one. Ensure there is **NOTHING** in the input field except the value. No extra spaces at the end, no line breaks.
+3. **Check Build Status:** Ensure the latest deployment actually finished and says "SUCCESS". If it says "FAILED", click it to see why.
+
+**I have updated the code to use the "Standalone" build mode.** This is the official Next.js recommendation for Docker. It makes the deployment much more stable.
