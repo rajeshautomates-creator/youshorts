@@ -17,25 +17,22 @@ In the Dokploy UI:
 
 ---
 
-## 2. Frontend Service
-In the Dokploy UI:
+## Environment Variables Checklist
 
-- **Root Directory**: `/`
-- **Docker Path**: `frontend.Dockerfile`
-- **Build Context**: `.`
+### 1. Backend Service
+Go to **Environment Variables** tab in your Dokploy Backend service and add these:
+- `DATABASE_URL`: `postgresql://postgres:password@host:5432/db` (Use your Dokploy Postgres Internal URL)
+- `JWT_SECRET`: A long random string (e.g., `df8g7h9jk0l1m2n3o4p5q6r7s8t9u0v1`)
+- `OPENAI_API_KEY`: Your OpenAI API key (Starts with `sk-...`)
+- `ELEVENLABS_API_KEY`: Your ElevenLabs API key
+- `PORT`: `5000`
 
-### CRITICAL: Port Configuration
-In Dokploy, go to **Network** or **Domain** settings for the Frontend:
-- **Service Port**: `4040` (You MUST set this to 4040, otherwise you will get a 502 Bad Gateway error).
-
-### Environment Variables
-- `PORT`: 4040
-- `NEXT_PUBLIC_API_URL`: Your backend URL
+### 2. Frontend Service
+Go to **Environment Variables** tab in your Dokploy Frontend service and add these:
+- `NEXT_PUBLIC_API_URL`: `https://api.yourdomain.com` (Your backend's domain)
+- `PORT`: `4040`
 
 ---
 
-## Troubleshooting "502 Bad Gateway"
-If your domain shows "502 Bad Gateway":
-1. **Check Service Port:** Ensure the service port in Dokploy is set to `4040` for the frontend.
-2. **Check Logs:** View the logs in Dokploy. If you see "Next.js started on 0.0.0.0:4040", then the app is fine, and the issue is the Dokploy port setting.
-3. **I have updated the code:** I've added a fix to ensure Next.js listens on all interfaces (`0.0.0.0`). Please pull and redeploy.
+## Troubleshooting "Invalid environment variables"
+If the backend logs show "Invalid environment variables", it means one of the required keys above is missing or undefined in the Dokploy dashboard. **Dokploy does not automatically read your local .env file**; you must copy-paste each variable into the Dokploy UI.

@@ -16,7 +16,9 @@ const envSchema = z.object({
 const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
-    console.error('❌ Invalid environment variables:', parsed.error.format());
+    console.error('❌ Invalid environment variables:', JSON.stringify(parsed.error.format(), null, 2));
+    console.error('\n💡 TIP: If you are seeing this in Dokploy, make sure you have added these variables in the "Environment Variables" tab of your service.');
+    console.error('Required: DATABASE_URL, JWT_SECRET, OPENAI_API_KEY, ELEVENLABS_API_KEY\n');
     process.exit(1);
 }
 
