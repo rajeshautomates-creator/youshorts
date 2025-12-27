@@ -21,6 +21,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/video', videoRoutes);
 app.use('/api/admin', adminRoutes);
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'YouTube Shorts Automation API is running.',
+    health: '/health',
+    version: '1.0.0'
+  });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
